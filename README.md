@@ -159,10 +159,8 @@ Find your GPU and ensure that under “Kernel driver in use:” vfio-pci is disp
 2. ???
 3. profit
 
-
 ---
  
-
 ### Configuring OVMF and Running libvirt
 
 1. download libvirt, virt-manager, ovmf, and qemu (these are all available in the AUR). OVMF is an open-source UEFI firmware designed for KVM and QEMU virtual machines. ovmf may be omitted if your hardware does not support it, or if you would prefer to use SeaBIOS. However, configuring it is very simple and typically worth the effort.
@@ -183,12 +181,8 @@ $ sudo systemctl start virtlogd.socket
 $ sudo systemctl enable libvirtd.service
 $ sudo systemctl enable virtlogd.socket
 ```
-
 With libvirt running, and your GPU bound, you are now prepared to open up virt-manager and begin configuring your virtual machine. 
-
-
 ---
-
 
 ### virt-manager, a GUI for managing virtual machines
 
@@ -336,4 +330,7 @@ Reference:
 1. https://bbs.archlinux.org/viewtopic.php?id=280512
 
 2. 
+
+---
+## Using Scream
 
