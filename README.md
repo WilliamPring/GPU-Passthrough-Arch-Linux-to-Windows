@@ -124,7 +124,14 @@ GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/nvme0n1p3:volgroup0:allow-discards 
 ```
 3. rebuild initramfs.
 
-`mkinitcpio -g /boot/linux-custom.img`
+`mkinitcpio -p linux`
+
+or if you are running lts
+`mkinitcpio -p linux-lts`
+
+if you want to apply to all of your presets
+
+`mkinitcpio -P`
 
 4. reboot
 `$ sudo reboot now`
@@ -328,5 +335,5 @@ your final grub should look like this:
 Reference:
 1. https://bbs.archlinux.org/viewtopic.php?id=280512
 
-2. https://passthroughpo.st/quick-dirty-arch-passthrough-guide/
+2. 
 
