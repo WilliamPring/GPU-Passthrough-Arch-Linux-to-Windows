@@ -294,7 +294,7 @@ Check out my [virth xml file](https://github.com/vanities/GPU-Passthrough-Arch-L
 
 edit by running something similar with your desired editor and VM name:
 
-`sudo EDITOR=nvim virsh edit win10`
+`sudo EDITOR=vim virsh edit win10`
 
 if this doesn't work, check your VM name:
 
@@ -308,7 +308,7 @@ your virsh config file should look something like this if your cpu is like mine,
 ### enabling hugepages
 1. edit `/etc/default/grub`
 
-`$ sudo nvim /etc/default/grub`
+`$ sudo vim /etc/default/grub`
 
 2. add `hugepages=2048` to **GRUB_COMMAND_LINE_DEFAULT**
 
