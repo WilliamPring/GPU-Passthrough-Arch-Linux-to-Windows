@@ -39,9 +39,7 @@ When you want to play windows 10 video games from your arch box because:
 
 ##### Disclamer:
 
-Most of this stuff is in the archlinux guide at the top, read more of that if any of this is confusing or something terribly goes wrong. This is my rig:
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/neofetch.png)
-
+Most of this stuff is in the archlinux guide at the top, read more of that if any of this is confusing or something terribly goes wrong.
 
 ---
 
@@ -55,7 +53,7 @@ HIT F10 or del or whatever the key is for your motherboard during bios initializ
 
 2. edit `/etc/default/grub` and add intel_iommu=on to GRUB_CMDLINE_LINUX_DEFAULT
 
-`$ sudo nvim /etc/default/grub`
+`$ sudo vim /etc/default/grub`
 For Intel:
 
 ```
@@ -112,11 +110,18 @@ MODULES="vfio vfio_iommu_type1 vfio_pci vfio_virqfd nouveau"
 ```
 
 In the same file, also add modconf to the HOOKS line:
-
 ```
 HOOKS="modconf"
 ```
 
+Warning!:
+
+If you have encrpytion on your drive and you are on linux 6.0.6 you might have a frozen screen after your reboot (it might freezes when its asking about the passphrase)! To see if you have encrpyiton you can look at the linux check the grub file
+
+Goto  `/etc/default/grub`
+```
+GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/nvme0n1p3:volgroup0:allow-discards loglevel=3 quiet amd_iommu=on iommu=pt"
+```
 3. rebuild initramfs.
 
 `mkinitcpio -g /boot/linux-custom.img`
@@ -309,4 +314,19 @@ your final grub should look like this:
 `$ sudo grub-mkconfig -o /boot/grub/grub.cfg`
 
 4. reboot and test it out
+
+
+--- 
+
+## Screen Frozen
+
+### Soultion 1
+1. Type your Passphraase like normal and Click enter
+2. From here two things can happen either its still frozen or you will get the normal login screen asking for username and password
+3. If its still frozen type your username click enter and type in your pass after and click enter 
+
+Reference:
+1. https://bbs.archlinux.org/viewtopic.php?id=280512
+
+2. https://passthroughpo.st/quick-dirty-arch-passthrough-guide/
 
