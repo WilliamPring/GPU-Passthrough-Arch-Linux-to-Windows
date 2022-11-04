@@ -1,27 +1,44 @@
 <domain type="kvm">
-  <name>shitdows</name>
-  <uuid>87c886a6-3831-4596-8e05-f18cfddcf8fb</uuid>
+  <name>win11</name>
+  <uuid>e1c48f83-1474-44b3-99b1-ab84cdce2f8f</uuid>
   <metadata>
     <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
       <libosinfo:os id="http://microsoft.com/win/10"/>
     </libosinfo:libosinfo>
   </metadata>
-  <memory unit="KiB">16777216</memory>
-  <currentMemory unit="KiB">16777216</currentMemory>
-  <vcpu placement="static">16</vcpu>
+  <memory unit="KiB">4194304</memory>
+  <currentMemory unit="KiB">4194304</currentMemory>
+  <vcpu placement="static">8</vcpu>
   <os>
-    <type arch="x86_64" machine="pc-q35-3.1">hvm</type>
-    <loader readonly="yes" type="pflash">/usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd</loader>
-    <nvram>/var/lib/libvirt/qemu/nvram/shitdows_VARS.fd</nvram>
+    <type arch="x86_64" machine="pc-q35-7.1">hvm</type>
+    <loader readonly="yes" secure="yes" type="pflash">/usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd</loader>
+    <nvram>/var/lib/libvirt/qemu/nvram/win11_VARS.fd</nvram>
     <boot dev="hd"/>
     <bootmenu enable="yes"/>
   </os>
   <features>
     <acpi/>
     <apic/>
+    <hyperv mode="custom">
+      <relaxed state="on"/>
+      <vapic state="on"/>
+      <spinlocks state="on" retries="8191"/>
+      <vpindex state="on"/>
+      <runtime state="on"/>
+      <synic state="on"/>
+      <stimer state="on"/>
+      <reset state="on"/>
+      <vendor_id state="on" value="whatever"/>
+      <frequencies state="on"/>
+    </hyperv>
+    <kvm>
+      <hidden state="on"/>
+    </kvm>
+    <vmport state="off"/>
+    <smm state="on"/>
   </features>
   <cpu mode="host-passthrough" check="none" migratable="on">
-    <topology sockets="2" dies="1" cores="4" threads="2"/>
+    <topology sockets="1" dies="1" cores="4" threads="2"/>
   </cpu>
   <clock offset="localtime">
     <timer name="rtc" tickpolicy="catchup"/>
@@ -40,15 +57,9 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type="file" device="disk">
       <driver name="qemu" type="qcow2"/>
-      <source file="/config/libvert/vol-win-shitdows.qcow2"/>
+      <source file="/config/libvert/win11.qcow2"/>
       <target dev="sda" bus="sata"/>
       <address type="drive" controller="0" bus="0" target="0" unit="0"/>
-    </disk>
-    <disk type="file" device="disk">
-      <driver name="qemu" type="qcow2"/>
-      <source file="/media/vm-config/prod-game.qcow2"/>
-      <target dev="sdb" bus="sata"/>
-      <address type="drive" controller="0" bus="0" target="0" unit="1"/>
     </disk>
     <controller type="usb" index="0" model="qemu-xhci" ports="15">
       <address type="pci" domain="0x0000" bus="0x02" slot="0x00" function="0x0"/>
@@ -111,9 +122,9 @@
       <target chassis="11" port="0xd"/>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x5"/>
     </controller>
-    <interface type="bridge">
+    <interface type="network">
       <mac address="52:54:00:8a:b8:c3"/>
-      <source bridge="br0"/>
+      <source network="default"/>
       <model type="virtio"/>
       <driver queues="8"/>
       <address type="pci" domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
@@ -132,18 +143,6 @@
       <backend type="emulator" version="2.0"/>
     </tpm>
     <audio id="1" type="none"/>
-    <hostdev mode="subsystem" type="pci" managed="yes">
-      <source>
-        <address domain="0x0000" bus="0x0a" slot="0x00" function="0x0"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x04" slot="0x00" function="0x0"/>
-    </hostdev>
-    <hostdev mode="subsystem" type="pci" managed="yes">
-      <source>
-        <address domain="0x0000" bus="0x0a" slot="0x00" function="0x1"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x07" slot="0x00" function="0x0"/>
-    </hostdev>
     <hostdev mode="subsystem" type="usb" managed="yes">
       <source>
         <vendor id="0x445a"/>
@@ -158,12 +157,17 @@
       </source>
       <address type="usb" bus="0" port="2"/>
     </hostdev>
-    <hostdev mode="subsystem" type="usb" managed="yes">
+    <hostdev mode="subsystem" type="pci" managed="yes">
       <source>
-        <vendor id="0x045e"/>
-        <product id="0x02ea"/>
+        <address domain="0x0000" bus="0x0a" slot="0x00" function="0x0"/>
       </source>
-      <address type="usb" bus="0" port="3"/>
+      <address type="pci" domain="0x0000" bus="0x04" slot="0x00" function="0x0"/>
+    </hostdev>
+    <hostdev mode="subsystem" type="pci" managed="yes">
+      <source>
+        <address domain="0x0000" bus="0x0a" slot="0x00" function="0x1"/>
+      </source>
+      <address type="pci" domain="0x0000" bus="0x07" slot="0x00" function="0x0"/>
     </hostdev>
     <memballoon model="virtio">
       <address type="pci" domain="0x0000" bus="0x03" slot="0x00" function="0x0"/>

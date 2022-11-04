@@ -327,9 +327,8 @@ your final grub should look like this:
 3. If its still frozen type your username click enter and type in your pass after and click enter 
 
 Reference:
-1. https://bbs.archlinux.org/viewtopic.php?id=280512
 
-2. 
+1. https://bbs.archlinux.org/viewtopic.php?id=280512
 
 ---
 ## Using Scream
