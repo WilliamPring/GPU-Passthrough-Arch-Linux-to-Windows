@@ -261,15 +261,7 @@ Select the correct CD-ROM labled `virto-win-XXXXX**`
 ![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_iso.jpg)
 
 Finally, select the `amd64` architecture
-![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_arch.jpg)
-
-3. your **SCSI** hard drive device should be there and you should be able to contiune the windows10 install
-
-
----
-
-
-## Performance Tuning
+![alt_text](https://github.com/vanities/GPU-zz
 
 Check out my [virth xml file](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/virsh-win10.xml)
 
@@ -331,5 +323,27 @@ Reference:
 1. https://bbs.archlinux.org/viewtopic.php?id=280512
 
 ---
-## Using Scream
+## Windows 11
+1. ### You need enable secure boot for windows 11 to work
+```
+  <os>
+    <type arch="x86_64" machine="pc-q35-7.1">hvm</type>
+    <loader readonly="yes" secure="yes" type="pflash">/usr/share/edk2-ovmf/x64/OVMF_CODE.secboot.fd</loader>
+    <nvram>/var/lib/libvirt/qemu/nvram/win11_VARS.fd</nvram>
+    <boot dev="hd"/>
+    <bootmenu enable="yes"/>
+  </os>
+```
+2. ### You need enable TPM
+`$ sudo pacman -Syu swtpm`
+```
+<tpm model="tpm-crb">
+  <backend type="emulator" version="2.0"/>
+</tpm>
+```
+---
+
+
+
+
 
