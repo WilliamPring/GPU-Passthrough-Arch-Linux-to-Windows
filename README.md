@@ -129,6 +129,14 @@ GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/nvme0n1p3:volgroup0:allow-discards 
 or if you are running lts
 `mkinitcpio -p linux-lts`
 
+
+
+NOTE: If you need to have a different config for linux and linux-lts mkinitconfig file you can edit it here at this path: 
+
+> sudo vim /etc/mkinitcpio.d/linux-lts.preset
+ALL_config="/etc/mkinitcpio-lts.conf"
+
+
 if you want to apply to all of your presets
 
 `mkinitcpio -P`
