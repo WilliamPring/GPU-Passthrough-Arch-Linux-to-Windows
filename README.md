@@ -363,6 +363,8 @@ sudo pacman -S qpwgraph carla
 ```
 7. Boot the vm up and check the patch bay in qpwgraph or carla to see if the device appear and is connected correctly
 
+![alt_text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/patchbay.png)
+
 ## Audio Working with Scream
 1. Refer the arch linux: https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Passing_audio_from_virtual_machine_to_host_via_Scream
 
