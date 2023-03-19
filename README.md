@@ -54,16 +54,13 @@ HIT F10 or del or whatever the key is for your motherboard during bios initializ
 2. edit `/etc/default/grub` and add intel_iommu=on to GRUB_CMDLINE_LINUX_DEFAULT
 
 `$ sudo vim /etc/default/grub`
-For Intel:
-
-```
-GRUB_CMDLINE_LINUX_DEFAULT="quiet ... intel_iommu=on"
-```
 
 For AMD:
 
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="quiet ... amd_iommu=on"
+GRUB_CMDLINE_LINUX_DEFAULT="rd.driver.pre=vfio-pci loglevel=3 quiet"
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=0991889f-2a4b-4dfe-a076-719552f87ce3:cryptlvm rootfstype=ext4 amd_iommu=on"
+
 ```
 
 3. re-configure your grub:
@@ -107,12 +104,14 @@ Next, we will need to ensure that vfio-pci is loaded before other graphics drive
 2. edit `/etc/mkinitcpio.conf`. At the very top of your file you should see a section titled MODULES. Towards the bottom of this section you should see the uncommented line: MODULES= . Add the in the following order before any other drivers (nouveau, radeon, nvidia, etc) which may be listed: vfio vfio_iommu_type1 vfio_pci vfio_virqfd. The line should look like the following:
 
 ```
-MODULES="vfio vfio_iommu_type1 vfio_pci vfio_virqfd nouveau"
+MODULES=(vfio_pci vfio vfio_iommu_type1)
 ```
+Note As of linux 6.2 you dont need the vfio_virqfd
+
 
 In the same file, also add modconf to the HOOKS line:
 ```
-HOOKS="modconf"
+HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
 ```
 
 Warning!:
@@ -325,7 +324,7 @@ Reference:
 
 ---
 ## Audio Working with Pipewire + Jack
-1. Download the pw-jack but this is not possible with libvert so download this
+1. pw-jack but this is not possible with libvert so download this
 
 ```
 sudo pacman -S qemu-audio-jack
