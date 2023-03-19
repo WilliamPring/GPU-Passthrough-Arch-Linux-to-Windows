@@ -154,14 +154,15 @@ Find your GPU and ensure that under “Kernel driver in use:” vfio-pci is disp
 
 
 ```
-1:00.0 VGA compatible controller [0300]: NVIDIA Corporation GM204 [GeForce GTX 980] [10de:13c0] (rev a1)
-	Subsystem: Micro-Star International Co., Ltd. [MSI] GM204 [GeForce GTX 980] [1462:3177]
+0a:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP104 [GeForce GTX 1080] [10de:1b80] (rev a1)
+	Subsystem: Gigabyte Technology Co., Ltd Device [1458:3702]
 	Kernel driver in use: vfio-pci
-	Kernel modules: nouveau
-01:00.1 Audio device [0403]: NVIDIA Corporation GM204 High Definition Audio Controller [10de:0fbb] (rev a1)
-	Subsystem: Micro-Star International Co., Ltd. [MSI] GM204 High Definition Audio Controller [1462:3177]
+	Kernel modules: nouveau, nvidia_drm, nvidia
+0a:00.1 Audio device [0403]: NVIDIA Corporation GP104 High Definition Audio Controller [10de:10f0] (rev a1)
+	Subsystem: Gigabyte Technology Co., Ltd Device [1458:3702]
 	Kernel driver in use: vfio-pci
 	Kernel modules: snd_hda_intel
+
 ```
 
 2. ???
