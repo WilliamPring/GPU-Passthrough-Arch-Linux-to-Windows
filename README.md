@@ -87,8 +87,9 @@ One of the first things you will want to do is isolate your GPU. The goal of thi
 
 and look through the given output until you find your desired GPU, they're **bold** in this case:
 
->01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GM204 [GeForce GTX 980] **[10de:13c0]** (rev a1)
->01:00.1 Audio device [0403]: NVIDIA Corporation GM204 High Definition Audio Controller **[10de:0fbb]** (rev a1)
+>0a:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP104 [GeForce GTX 1080] [10de:1b80] (rev a1)
+>0a:00.1 Audio device [0403]: NVIDIA Corporation GP104 High Definition Audio Controller [10de:10f0] (rev a1)
+
 
 
 ### Configuring vfio-pci and Regenerating your Initramfs
@@ -322,6 +323,53 @@ Reference:
 
 1. https://bbs.archlinux.org/viewtopic.php?id=280512
 
+---
+## Audio Working with Pipewire + Jack
+1. Download the pw-jack but this is not possible with libvert so download this
+
+```
+sudo pacman -S qemu-audio-jack
+```
+
+2. Edit file `/etc/libvirt/qemu.conf` 
+```
+user = "will"
+```
+3. In virt-manager and add Sound ich9
+```
+<sound model="ich9">
+  <codec type="micro"/>
+  <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
+</sound>
+```
+
+4. Add the follow block to device section change the connectPorts to your device: 
+```
+  <audio id="1" type="jack">
+      <input clientName="win10" connectPorts="Yeti Stereo Microphone Analog Stereo:capture_F[LR]"/>
+      <output clientName="win10" connectPorts="Schiit.*playback_F[LR]"/>
+    </audio>
+```
+5. Download `qpwgraph` or `carla` to use the patch bay to see if the connection will be correct
+```
+sudo pacman -S qpwgraph carla
+```
+6. Set the directory and latency and put this block after the device and before domain
+```
+  <qemu:commandline>
+    <qemu:env name="PIPEWIRE_RUNTIME_DIR" value="/run/user/1000"/>
+    <qemu:env name="PIPEWIRE_LATENCY" value="512/48000"/>
+  </qemu:commandline>
+```
+
+## Audio Working with Scream
+1. 
+```
+  <audio id="1" type="jack">
+      <input clientName="win10" connectPorts="Yeti Stereo Microphone Analog Stereo:capture_F[LR]"/>
+      <output clientName="win10" connectPorts="Schiit.*playback_F[LR]"/>
+    </audio>
+```
 ---
 ## Windows 11
 1. ### You need enable secure boot for windows 11 to work
