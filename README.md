@@ -195,9 +195,9 @@ With libvirt running, and your GPU bound, you are now prepared to open up virt-m
 
 `$ sudo pacman -S virt-manager`
 
-2. add yourself to the libvirt group (replace vanities with your username)
+2. add yourself to the libvirt group (replace williampring with your username)
 
-`$ sudo usermod -a -G libvirt vanities`
+`$ sudo usermod -a -G libvirt williampring`
 
 3. launch virt-manager
 
@@ -207,64 +207,64 @@ With libvirt running, and your GPU bound, you are now prepared to open up virt-m
 
 5. in the "Overview" section, set your firmware to "UEFI". If the option is grayed out, make sure that you have correctly specified the location of your firmware in /etc/libvirt/qemu.conf and restart libvirtd.service by running  `sudo systemctl restart libvirtd`
 
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/uefi.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/uefi.png)
 
 6. in the "CPUs" section, change your CPU model to "**host-passthrough**". If it is not in the list, you will have to type it by hand. This will ensure that your CPU is detected properly, since it causes libvirt to expose your CPU capabilities exactly as they are instead of only those it recognizes (which is the preferred default behavior to make CPU behavior easier to reproduce). Without it, some applications may complain about your CPU being of an unknown model.
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/cpu.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/cpu.png)
 
 
 7. go into "Add Hardware" and add a Controller for **SCSI** drives of the "VirtIO SCSI" model.
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/virtioscsi.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/virtioscsi.png)
 
 
 8. then change the default IDE disk for a **SCSI** disk, which will bind to said controller.
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/scsi.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/scsi.png)
 
 
 a. windows VMs will not recognize those drives by default, so you need to download the ISO containing the drivers from [here](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.160-1/virtio-win-0.1.160.iso) and add an **SATA** CD-ROM storage device linking to said ISO, otherwise you will not be able to get Windows to recognize it during the installation process.
 
 9. make sure there is another **SATA** CD-ROM device that is handling your windows10 iso from the top links.
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/satavirtio.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/satavirtio.png)
 
 10. setup your GPU, navigate to the “Add Hardware” section and select both the GPU and its sound device that was isolated previously in the **PCI** tab
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/gpu.png)
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/gpu-audio.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/gpu.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/gpu-audio.png)
 
 11. lastly, attach your usb keyboard
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/keyboard.png)
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/mouse.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/keyboard.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/mouse.png)
 
 12. don't forget to pass some good RAM as well
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/ram.png)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/ram.png)
 
 #### installing windows
 
 1. test to see if it works by pressing the **play** button after configuring your VM and install windows
 
 You may see this screen, just type `exit` and bo to the BIOs screen.
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/exit.jpg)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/exit.jpg)
 
 From the BIOs screen, select and `enter` the **Boot Manager**
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_boot.jpg)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_boot.jpg)
 
 Lastly, pick one of the DVD-ROM ones from these menus
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_dvd.jpg)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_dvd.jpg)
 
 2. from here, you should be able to see windows 10 booting up, we need to load the **virtio-scsi** drivers
 
 When you get to **Windows Setup** click `Custom: Install windows only (advanced)`
-![alt text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/advanced_windows.JPG)
+![alt text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/advanced_windows.JPG)
 
 You should notice that our SCSI hard drive hasn't been detected yet, click `Load driver`
-![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/load_drivers.jpg)
+![alt_text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/load_drivers.jpg)
 
 Select the correct CD-ROM labled `virto-win-XXXXX**`
-![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_iso.jpg)
+![alt_text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/select_iso.jpg)
 
 Finally, select the `amd64` architecture
-![alt_text](https://github.com/vanities/GPU-zz
+![alt_text](https://github.com/williampring/GPU-zz
 
-Check out my [virth xml file](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/virsh-win10.xml)
+Check out my [virth xml file](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/virsh-win10.xml)
 
 ### CPU pinnging
 
@@ -274,7 +274,7 @@ Check out my [virth xml file](https://github.com/vanities/GPU-Passthrough-Arch-L
 
 `lscpu -e`
 
-![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/lscpu.png)
+![alt_text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/lscpu.png)
 
 
 ### editing virsh
@@ -287,7 +287,7 @@ if this doesn't work, check your VM name:
 
 `sudo virsh list`
 
-![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/cpupinning.png)
+![alt_text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/cpupinning.png)
 
 your virsh config file should look something like this if your cpu is like mine, otherwise revert to the arch guide:
 [cpu-pinning guide](https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#CPU_pinning)
@@ -301,7 +301,7 @@ your virsh config file should look something like this if your cpu is like mine,
 
 your final grub should look like this:
 
-![alt_text](https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/grub.png)
+![alt_text](https://github.com/williampring/GPU-Passthrough-Arch-Linux-to-Windows10/blob/master/pics/grub.png)
 
 3. re-configure your grub:
 
@@ -361,15 +361,11 @@ sudo pacman -S qpwgraph carla
     <qemu:env name="PIPEWIRE_LATENCY" value="512/48000"/>
   </qemu:commandline>
 ```
+7. Boot the vm up and check the patch bay in qpwgraph or carla to see if the device appear and is connected correctly
 
 ## Audio Working with Scream
-1. 
-```
-  <audio id="1" type="jack">
-      <input clientName="win10" connectPorts="Yeti Stereo Microphone Analog Stereo:capture_F[LR]"/>
-      <output clientName="win10" connectPorts="Schiit.*playback_F[LR]"/>
-    </audio>
-```
+1. Refer the arch linux: https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#Passing_audio_from_virtual_machine_to_host_via_Scream
+
 ---
 ## Windows 11
 1. ### You need enable secure boot for windows 11 to work
