@@ -74,13 +74,14 @@ GRUB_CMDLINE_LINUX="cryptdevice=UUID=0991889f-2a4b-4dfe-a076-719552f87ce3:cryptl
 `$ sudo reboot now`
 
 
-### Isolating the GPU
-
-One of the first things you will want to do is isolate your GPU. The goal of this is to prevent the Linux kernel from loading drivers that would take control of the GPU. Because of this, it is necessary to have two GPUs installed and functional within your system. One will be used for interacting with your Linux host (just like normal), and the other will be passed-through to your Windows guest. In the past, this had to be achieved through using a driver called pci-stub. While it is still possible to do so, it is older and holds no advantage over its successor –vfio-pci.
-
-1. find the device ID of the GPU that will be passed through by running lscpi
-
-`$ lspci -nn`
+### Isolating the GPU1:00.0 VGA compatible controller [0300]: NVIDIA Corporation GM204 [GeForce GTX 980] [10de:13c0] (rev a1)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] GM204 [GeForce GTX 980] [1462:3177]
+	Kernel driver in use: vfio-pci
+	Kernel modules: nouveau
+01:00.1 Audio device [0403]: NVIDIA Corporation GM204 High Definition Audio Controller [10de:0fbb] (rev a1)
+	Subsystem: Micro-Star International Co., Ltd. [MSI] GM204 High Definition Audio Controller [1462:3177]
+	Kernel driver in use: vfio-pci
+	Kernel modules: snd_hda_intel
 
 and look through the given output until you find your desired GPU, they're **bold** in this case:
 

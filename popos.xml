@@ -1,53 +1,32 @@
 <domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="kvm">
-  <name>win11</name>
-  <uuid>f6a005f1-f892-4015-b634-e8ec0aa107b6</uuid>
+  <name>popos20.10</name>
+  <uuid>09879192-3265-46c3-b7f5-e9614ec1906c</uuid>
   <metadata>
     <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
-      <libosinfo:os id="http://microsoft.com/win/11"/>
+      <libosinfo:os id="http://system76.com/popos/20.10"/>
     </libosinfo:libosinfo>
   </metadata>
-  <memory unit="KiB">12509184</memory>
-  <currentMemory unit="KiB">12509184</currentMemory>
+  <memory unit="KiB">4194304</memory>
+  <currentMemory unit="KiB">4194304</currentMemory>
   <memoryBacking>
     <source type="memfd"/>
     <access mode="shared"/>
   </memoryBacking>
-  <vcpu placement="static">10</vcpu>
-  <cputune>
-    <vcpupin vcpu="0" cpuset="6"/>
-    <vcpupin vcpu="1" cpuset="7"/>
-    <vcpupin vcpu="2" cpuset="8"/>
-    <vcpupin vcpu="3" cpuset="9"/>
-    <vcpupin vcpu="4" cpuset="18"/>
-    <vcpupin vcpu="5" cpuset="19"/>
-    <vcpupin vcpu="6" cpuset="20"/>
-    <vcpupin vcpu="7" cpuset="21"/>
-    <vcpupin vcpu="8" cpuset="22"/>
-    <vcpupin vcpu="9" cpuset="23"/>
-  </cputune>
-  <os firmware="efi">
+  <vcpu placement="static">2</vcpu>
+  <os>
     <type arch="x86_64" machine="pc-q35-7.2">hvm</type>
     <boot dev="hd"/>
   </os>
   <features>
     <acpi/>
     <apic/>
-    <hyperv mode="custom">
-      <relaxed state="on"/>
-      <vapic state="on"/>
-      <spinlocks state="on" retries="8191"/>
-    </hyperv>
     <vmport state="off"/>
   </features>
-  <cpu mode="host-passthrough" check="none" migratable="on">
-    <topology sockets="1" dies="1" cores="5" threads="2"/>
-    <feature policy="require" name="topoext"/>
-  </cpu>
-  <clock offset="localtime">
+  <cpu mode="host-passthrough" check="none" migratable="on"/>
+  <clock offset="utc">
     <timer name="rtc" tickpolicy="catchup"/>
     <timer name="pit" tickpolicy="delay"/>
     <timer name="hpet" present="no"/>
-    <timer name="hypervclock" present="yes"/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
@@ -60,35 +39,15 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type="file" device="disk">
       <driver name="qemu" type="qcow2"/>
-      <source file="/config/libvert/win11.qcow2"/>
+      <source file="/config/libvert/popos20.10"/>
+      <target dev="vda" bus="virtio"/>
+      <address type="pci" domain="0x0000" bus="0x03" slot="0x00" function="0x0"/>
+    </disk>
+    <disk type="file" device="cdrom">
+      <driver name="qemu" type="raw"/>
       <target dev="sda" bus="sata"/>
+      <readonly/>
       <address type="drive" controller="0" bus="0" target="0" unit="0"/>
-    </disk>
-    <disk type="file" device="cdrom">
-      <driver name="qemu" type="raw"/>
-      <source file="/home/will/Downloads/Win11_22H2_English_x64v1.iso"/>
-      <target dev="sdb" bus="sata"/>
-      <readonly/>
-      <address type="drive" controller="0" bus="0" target="0" unit="1"/>
-    </disk>
-    <disk type="file" device="cdrom">
-      <driver name="qemu" type="raw"/>
-      <source file="/config/iso/virtio-win-0.1.229.iso"/>
-      <target dev="sdc" bus="sata"/>
-      <readonly/>
-      <address type="drive" controller="0" bus="0" target="0" unit="2"/>
-    </disk>
-    <disk type="file" device="disk">
-      <driver name="qemu" type="qcow2"/>
-      <source file="/home/will/vm/config/storage/Win10GameNVME.qcow2"/>
-      <target dev="sdd" bus="sata"/>
-      <address type="drive" controller="0" bus="0" target="0" unit="3"/>
-    </disk>
-    <disk type="file" device="disk">
-      <driver name="qemu" type="qcow2"/>
-      <source file="/media/games/win10Games.qcow2"/>
-      <target dev="sde" bus="sata"/>
-      <address type="drive" controller="0" bus="0" target="0" unit="4"/>
     </disk>
     <controller type="usb" index="0" model="qemu-xhci" ports="15">
       <address type="pci" domain="0x0000" bus="0x02" slot="0x00" function="0x0"/>
@@ -167,9 +126,6 @@
     <controller type="sata" index="0">
       <address type="pci" domain="0x0000" bus="0x00" slot="0x1f" function="0x2"/>
     </controller>
-    <controller type="virtio-serial" index="0">
-      <address type="pci" domain="0x0000" bus="0x03" slot="0x00" function="0x0"/>
-    </controller>
     <filesystem type="mount" accessmode="passthrough">
       <driver type="virtiofs"/>
       <source dir="/media/share/windows"/>
@@ -177,66 +133,33 @@
       <address type="pci" domain="0x0000" bus="0x07" slot="0x00" function="0x0"/>
     </filesystem>
     <interface type="network">
-      <mac address="52:54:00:0a:49:9e"/>
-      <source network="default"/>
-      <model type="e1000e"/>
+      <mac address="52:54:00:a0:a3:32"/>
+      <source network="macvtap-net"/>
+      <model type="virtio"/>
       <address type="pci" domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
     </interface>
-    <serial type="pty">
-      <target type="isa-serial" port="0">
-        <model name="isa-serial"/>
-      </target>
-    </serial>
-    <console type="pty">
-      <target type="serial" port="0"/>
-    </console>
-    <channel type="spicevmc">
-      <target type="virtio" name="com.redhat.spice.0"/>
-      <address type="virtio-serial" controller="0" bus="0" port="1"/>
-    </channel>
+    <input type="tablet" bus="usb">
+      <address type="usb" bus="0" port="1"/>
+    </input>
     <input type="mouse" bus="ps2"/>
     <input type="keyboard" bus="ps2"/>
-    <graphics type="spice" autoport="yes">
-      <listen type="address"/>
-      <image compression="off"/>
+    <graphics type="spice">
+      <listen type="none"/>
+      <image compression="auto_glz"/>
+      <gl enable="yes"/>
     </graphics>
     <sound model="ich9">
       <codec type="micro"/>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
     </sound>
     <audio id="1" type="jack">
-      <input clientName="win11" connectPorts="Yeti Stereo Microphone Analog Stereo:capture_F[LR]"/>
-      <output clientName="win11" connectPorts="Schiit.*playback_F[LR]"/>
+      <input clientName="popos22" connectPorts="Yeti Stereo Microphone Analog Stereo:capture_F[LR]"/>
+      <output clientName="popos22" connectPorts="Schiit.*playback_F[LR]"/>
     </audio>
     <video>
-      <model type="none"/>
+      <model type="virtio" heads="2" primary="yes"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x0"/>
     </video>
-    <hostdev mode="subsystem" type="pci" managed="yes">
-      <source>
-        <address domain="0x0000" bus="0x0a" slot="0x00" function="0x0"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x05" slot="0x00" function="0x0"/>
-    </hostdev>
-    <hostdev mode="subsystem" type="pci" managed="yes">
-      <source>
-        <address domain="0x0000" bus="0x0a" slot="0x00" function="0x1"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x06" slot="0x00" function="0x0"/>
-    </hostdev>
-    <hostdev mode="subsystem" type="usb" managed="yes">
-      <source>
-        <vendor id="0x445a"/>
-        <product id="0x1221"/>
-      </source>
-      <address type="usb" bus="0" port="1"/>
-    </hostdev>
-    <hostdev mode="subsystem" type="usb" managed="yes">
-      <source>
-        <vendor id="0x046d"/>
-        <product id="0xc08b"/>
-      </source>
-      <address type="usb" bus="0" port="4"/>
-    </hostdev>
     <redirdev bus="usb" type="spicevmc">
       <address type="usb" bus="0" port="2"/>
     </redirdev>
